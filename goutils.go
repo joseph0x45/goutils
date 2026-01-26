@@ -65,6 +65,14 @@ func AppConfigDir(user *user.User) string {
 	)
 }
 
+func AppConfigFile(user *user.User, fileName string) string {
+	appNameIsNotEmpty()
+	return path.Join(
+		AppConfigDir(user),
+		fileName,
+	)
+}
+
 func AppDatabasePath(user *user.User) string {
 	appNameIsNotEmpty()
 	return path.Join(
