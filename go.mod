@@ -2,4 +2,8 @@ module github.com/joseph0x45/goutils
 
 go 1.25.5
 
-require golang.org/x/crypto v0.46.0
+require (
+	github.com/go-chi/chi v1.5.5
+	github.com/go-chi/chi/v5 v5.2.5
+	golang.org/x/crypto v0.46.0
+)
