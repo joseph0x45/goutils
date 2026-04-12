@@ -1,7 +1,7 @@
 package goutils
 
 import (
-	"embed"
+	"io/fs"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -23,7 +23,7 @@ func ServeJS(r chi.Router, path, js string) {
 	})
 }
 
-func ServeFS(r chi.Router, basePath string, fs embed.FS) {
+func ServeFS(r chi.Router, basePath string, fs fs.FS) {
 	r.Handle(basePath+"*", http.StripPrefix(basePath, http.FileServer(http.FS(fs))))
 }
 
