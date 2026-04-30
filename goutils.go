@@ -98,3 +98,12 @@ func HashMatchesPassword(hash, password string) bool {
 		[]byte(password),
 	) == nil
 }
+
+func GetAppConfigFilePath() string {
+	appNameIsNotEmpty()
+	user, err := user.Current()
+	if err != nil {
+		panic(err)
+	}
+	return AppConfigFile(user, "conf")
+}
