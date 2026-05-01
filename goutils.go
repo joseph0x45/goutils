@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/user"
 	"path"
+	"strings"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -106,4 +107,35 @@ func GetAppConfigFilePath() string {
 		panic(err)
 	}
 	return AppConfigFile(user, "conf")
+}
+
+type ParsedDotenv struct {
+	content map[string]string
+}
+
+func (p *ParsedDotenv) GetKey(key string) string {
+	return p.content[key]
+}
+
+func (p ParsedDotenv) SetKey(key, value string) {
+	p.content[key] = value
+}
+
+func ParseSimpleDotenv(dotenvContent string) ParsedDotenv {
+	trimmedContent := strings.Trim(dotenvContent, " \t\n")
+	parts := strings.Split(trimmedContent, "\n")
+	parsedDotenv := map[string]string{}
+	for _, part := range parts {
+		kv := strings.Split(part, "=")
+		parsedDotenv[kv[0]] = kv[1]
+	}
+	return ParsedDotenv{content: parsedDotenv}
+}
+
+func (p ParsedDotenv) Write() string {
+	output := ""
+	for k, v := range p.content {
+		output += fmt.Sprintf("%s=%s\n", k, v)
+	}
+	return output
 }
