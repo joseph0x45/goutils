@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/user"
 	"path"
+	"path/filepath"
 	"strings"
 
 	"golang.org/x/crypto/bcrypt"
@@ -28,6 +29,16 @@ func EnsureDirExists(path string, perm ...os.FileMode) error {
 		perms = perm[0]
 	}
 	return os.MkdirAll(path, perms)
+}
+
+func EnsureDirForFile(filePath string, perm ...os.FileMode) error {
+	perms := os.FileMode(0755)
+	if len(perm) != 0 {
+		perms = perm[0]
+	}
+
+	dir := filepath.Dir(filePath)
+	return os.MkdirAll(dir, perms)
 }
 
 func AppDataDir(user *user.User) string {
